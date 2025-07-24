@@ -1,19 +1,17 @@
-name: 🌸 Continuous Deployment - Iris API
+name: 🚀 Deploy to GKE
 
 on:
   push:
-    branches: [ main ]
-    paths:
-      - 'docker_version/**'
-      - '.cml/**'
-      - '.github/workflows/cd.yaml'
+    branches:
+      - main
 
 jobs:
   deploy:
+    name: 🔄 Deploy to GKE
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔄 Checkout Repository
+      - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
       - name: 🔐 Authenticate to Google Cloud
@@ -21,22 +19,19 @@ jobs:
         with:
           credentials_json: ${{ secrets.GOOGLE_CREDENTIAL }}
 
-      - name: ☁️ Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      - name: 🧰 Set up gcloud SDK
+        uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          export_default_credentials: true
+          install_components: 'gke-gcloud-auth-plugin,kubectl'
 
-      - name: 🐳 Authenticate Docker to Artifact Registry
-        run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
-
-      - name: 🔧 Get GKE credentials (generate kubeconfig)
+      - name: 📡 Get GKE credentials
         run: |
           gcloud container clusters get-credentials iris-kubernetes \
-            --zone us-central1 \
-            --project ${{ secrets.GCP_PROJECT_ID }}
+            --region us-central1 \
+            --project ageless-aura-461314-a1
 
-      - name: 🚀 Deploy to Kubernetes via CML script
-        run: bash .cml/cd.sh
+      - name: ♻️ Update Kubernetes deployment image
+        run: |
+          echo "♻️ Updating Kubernetes deployment image..."
+          kubectl set image deployment/iris-workload iris-api=us-central1-docker.pkg.dev/ageless-aura-461314-a1/my-repo/iris-api:latest --namespace=default
 
