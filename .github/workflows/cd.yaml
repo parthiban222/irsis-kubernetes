@@ -34,7 +34,7 @@ jobs:
       - name: 🔧 Get GKE credentials (generate kubeconfig)
         run: |
           gcloud container clusters get-credentials iris-kubernetes \
-            --zone us-central1-c \
+            --zone us-central1 \
             --project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: 🔌 Install gke-gcloud-auth-plugin
