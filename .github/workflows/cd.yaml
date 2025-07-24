@@ -31,16 +31,11 @@ jobs:
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
-      - name: ⚙️ Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
-
-      - name: 🧪 Configure kubeconfig
+      - name: 🔧 Get GKE credentials (kubeconfig)
         run: |
-          echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
-          export KUBECONFIG=$(pwd)/kubeconfig.yaml
-          kubectl config use-context gke_ageless-aura-461314-a1_us-central1-c_iris-kubernetes
+          gcloud container clusters get-credentials iris-kubernetes \
+            --zone us-central1-c \
+            --project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: 🚀 Deploy to Kubernetes via CML script
         run: bash .cml/cd.sh
