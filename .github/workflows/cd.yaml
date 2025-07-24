@@ -34,7 +34,7 @@ jobs:
       - name: 🔧 Get GKE credentials (kubeconfig)
         run: |
           gcloud container clusters get-credentials iris-kubernetes \
-        --zone us-central1 \
+            --zone us-central1 \
             --project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: 🚀 Deploy to Kubernetes via CML script
