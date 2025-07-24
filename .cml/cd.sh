@@ -11,7 +11,7 @@ echo "🚀 Pushing image to Artifact Registry..."
 docker push us-central1-docker.pkg.dev/ageless-aura-461314-a1/my-repo/iris-api:latest
 
 echo "♻️ Updating Kubernetes deployment image..."
-kubectl set image deployment/iris-workload iris-api=us-central1-docker.pkg.dev/ageless-aura-461314-a1/my-repo/iris-api:latest --namespace=default
+kubectl set image deployment/iris-workload iris-api-sha256-1=us-central1-docker.pkg.dev/ageless-aura-461314-a1/my-repo/iris-api:latest --namespace=default
 
 echo "✅ Deployment updated with new image!"
 
