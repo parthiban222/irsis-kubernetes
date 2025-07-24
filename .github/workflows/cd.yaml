@@ -33,5 +33,6 @@ jobs:
       - name: ♻️ Update Kubernetes deployment image
         run: |
           echo "♻️ Updating Kubernetes deployment image..."
-          kubectl set image deployment/iris-workload iris-api=us-central1-docker.pkg.dev/ageless-aura-461314-a1/my-repo/iris-api:latest --namespace=default
+          kubectl set image deployment/iris-workload iris-api-sha256-1=us-central1-docker.pkg.dev/ageless-aura-461314-a1/my-repo/iris-api:latest --namespace=default
+
 
